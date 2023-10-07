@@ -31,7 +31,7 @@ def clean_characteristics(df):
 
 @st.cache_data  #
 def load_data(year):
-    base_path = f"C:/Users/cleo/Desktop/S7/CAR ACCIDENT DASHBOARD/assets/{year}"
+    base_path = f"assets/{year}"
     caracteristiques = pd.read_csv(
         os.path.join(base_path, f"caracteristiques-{year}.csv"), sep=";"
     )
