@@ -1,7 +1,7 @@
-streamlit==1.27.2
-pandas==2.1.1
-numpy==1.26.0
-folium==0.12.1
+streamlit
+pandas
+numpy
+folium
 streamlit-folium
-streamlit_toggle == 0.1.3
-plotly == 5.16.1
+streamlit_toggle
+plotly
