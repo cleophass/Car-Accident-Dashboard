@@ -53,10 +53,10 @@ def create_fig_sex(df):
     df_copy = df.copy()
     # drop line where value = -1
     df_copy = df_copy[df_copy["sexe"] != -1]
-    sex_counts = df_copy["sexe"].value_counts().reset_index()
 
     # Mapping des codes de sexe à des chaînes de caractères pour une meilleure lisibilité
     sex_mapping = {1: "Male", 2: "Female"}
+    sex_counts = df_copy["sexe"].value_counts().reset_index(name="count")
     sex_counts["index"] = sex_counts["index"].map(sex_mapping)
 
     fig = px.pie(
