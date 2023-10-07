@@ -29,7 +29,6 @@ def clean_characteristics(df):
     return df
 
 
-@st.cache(allow_output_mutation=True)
 def load_data(year):
     base_path = f"assets/{year}"
     caracteristiques = pd.read_csv(
