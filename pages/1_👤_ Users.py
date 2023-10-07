@@ -5,7 +5,6 @@
 import plotly.express as px
 import streamlit as st
 from utils import load_data
-import streamlit_toggle as tog
 
 
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Users")
@@ -204,15 +203,9 @@ def display_users():
     fig = create_fig(df3)
     st.write("\n\n\n\n")
     st.markdown("## Distribution of journey reasons with injury severity")
-    normalized_view = tog.st_toggle_switch(
-        label="See normalized representation!",
-        key="Key2",
-        default_value=False,
-        label_after=False,
-        inactive_color="#D3D3D3",
-        active_color="#11567f",
-        track_color="#29B5E8",
-    )
+
+    normalized_view = st.toggle("See normalized representation!", value=False)
+
     if normalized_view:
         col1, col2 = st.columns(2)  # Create two columns
         for _ in range(5):  # Adjust the alignment if needed

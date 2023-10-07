@@ -2,10 +2,9 @@ import streamlit as st
 from utils import load_data
 import plotly.express as px
 import plotly.graph_objects as go
-import streamlit_toggle as tog
-
 
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Roads & ⛈️Conditions")
+
 
 surf_mapping = {
     -1: "Not specified",
@@ -141,15 +140,9 @@ def display_road():
     st.write("\n")
     st.write("\n")
     st.markdown("## Number of Accidents by Road Surface Condition")
-    normalized_view = tog.st_toggle_switch(
-        label="See it real representation in dataset !",
-        key="Key1",
-        default_value=False,
-        label_after=False,
-        inactive_color="#D3D3D3",
-        active_color="#11567f",
-        track_color="#29B5E8",
-    )
+
+    normalized_view = st.toggle("See it real representation in dataset !", value=False)
+
     if normalized_view:
         fig = create_fig(df1)
         st.plotly_chart(fig)
@@ -164,6 +157,7 @@ def display_road():
         col1.plotly_chart(pie_chart)  # Display pie chart in the first column
         normalized_hist = create_normalized_histogram(df3)
         col2.plotly_chart(normalized_hist)  # Display histogram in the second column
+
     st.markdown("## Number of Accidents by VMA")
     vma_fig = create_vma_fig(df2)
     st.plotly_chart(vma_fig)
