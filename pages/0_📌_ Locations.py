@@ -4,7 +4,6 @@ import folium
 from folium.plugins import FastMarkerCluster, HeatMap
 from streamlit_folium import folium_static
 import numpy as np
-import streamlit_toggle as tog
 
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Location")
 
@@ -35,12 +34,8 @@ def display_location():
         "Paris": (48.8566, 2.3522, 75),
         "Lyon": (45.7578, 4.8320, 69),
         "Marseille": (43.2965, 5.3698, 13),
-        "Bordeaux": (
-            44.8378,
-            -0.5792,
-            33,
-        ),  # Ajoutez les coordonnées et le code de département pour Bordeaux
-        "Nice": (43.7102, 7.2620, 6),  # Et pour Nice
+        "Bordeaux": (44.8378, -0.5792, 33),
+        "Nice": (43.7102, 7.2620, 6),
     }
 
     caracteristiques, _, _, _ = load_data(2021)
@@ -52,22 +47,21 @@ def display_location():
     accident_count = len(city_data)
     st.markdown(
         """
-                <style>
-                .red-text {
-                    color: red;
-                    font-size:30px !important;
-                    font-weight: bold;  
-                }
-                .big-text {
-                    font-size:30px !important;
-                    font-weight: bold;  
-                }
-                </style>
-                """,
+        <style>
+        .red-text {
+            color: red;
+            font-size:30px !important;
+            font-weight: bold;  
+        }
+        .big-text {
+            font-size:30px !important;
+            font-weight: bold;  
+        }
+        </style>
+        """,
         unsafe_allow_html=True,
     )
 
-    # Utilisez une balise span avec la classe 'red-text' pour le nombre d'accidents
     st.markdown(
         "<span class='big-text'>Number of accidents in {} : </span><span class='red-text'>{}</span>".format(
             city, accident_count
@@ -76,15 +70,7 @@ def display_location():
     )
 
     # Un bouton switch pour choisir entre Fast Marker Cluster et Heatmap
-    is_heatmap = tog.st_toggle_switch(
-        label="Try another map !",
-        key="Key1",
-        default_value=False,
-        label_after=False,
-        inactive_color="#D3D3D3",
-        active_color="#11567f",
-        track_color="#29B5E8",
-    )
+    is_heatmap = st.toggle("Try another map !", value=False)
 
     if is_heatmap:
         display_heatmap(city_data, city_coordinates)
