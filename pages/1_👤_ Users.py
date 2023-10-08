@@ -150,7 +150,7 @@ def create_normalized_journey_reason_histogram(df):
     df["trajet"] = df["trajet"].map(journey_mapping)  # Apply the mapping here
 
     grouped = df.groupby(["trajet", "grav"]).size().reset_index(name="count")
-    grouped["count_normalized"] = grouped.groupby("trajet")["count"].apply(
+    grouped["count_normalized"] = grouped.groupby("surf")["count"].transform(
         lambda x: x / x.sum()
     )
     fig = px.histogram(
