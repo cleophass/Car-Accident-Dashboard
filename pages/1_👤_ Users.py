@@ -6,8 +6,8 @@ import plotly.express as px
 import streamlit as st
 from utils import load_data
 
-
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Users")
+
 journey_mapping = {
     1: "Home – Work",
     2: "Home – School",
@@ -54,15 +54,16 @@ def create_fig_sex(df):
     # drop line where value = -1
     df_copy = df_copy[df_copy["sexe"] != -1]
     sex_counts = df_copy["sexe"].value_counts().reset_index()
+    # sex_counts = df_copy["sexe"].value_counts().reset_index()
 
     # Mapping des codes de sexe à des chaînes de caractères pour une meilleure lisibilité
     sex_mapping = {1: "Male", 2: "Female"}
-    sex_counts["index"] = sex_counts["index"].map(sex_mapping)
+    sex_counts["sexe"] = sex_counts["sexe"].map(sex_mapping)
 
     fig = px.pie(
         sex_counts,
-        values="sexe",
-        names="index",
+        values="count",
+        names="sexe",
         hole=0.7,  # Ajoutez un trou au milieu du diagramme à secteurs pour en faire un diagramme en anneau
         color_discrete_sequence=[
             "#0068C9",
@@ -150,9 +151,15 @@ def create_normalized_journey_reason_histogram(df):
     df["trajet"] = df["trajet"].map(journey_mapping)  # Apply the mapping here
 
     grouped = df.groupby(["trajet", "grav"]).size().reset_index(name="count")
-    grouped["count_normalized"] = grouped.groupby("surf")["count"].transform(
-        lambda x: x / x.sum()
+
+    # Corrigez l'erreur en réinitialisant l'index
+    count_normalized = (
+        grouped.groupby("trajet")["count"]
+        .apply(lambda x: x / x.sum())
+        .reset_index(drop=True)
     )
+    grouped["count_normalized"] = count_normalized
+
     fig = px.histogram(
         grouped,
         x="trajet",

@@ -77,9 +77,15 @@ def create_normalized_histogram(df):
     df = df[~df["surf"].isin(["Other", "Not specified"])]
 
     grouped = df.groupby(["surf", "grav"]).size().reset_index(name="count")
-    grouped["count_normalized"] = grouped.groupby("surf")["count"].apply(
-        lambda x: x / x.sum()
+
+    # Modification ici
+    count_normalized_series = (
+        grouped.groupby("surf")["count"]
+        .apply(lambda x: x / x.sum())
+        .reset_index(level=0, drop=True)
     )
+    grouped["count_normalized"] = count_normalized_series
+
     fig = px.histogram(
         grouped,
         x="surf",
@@ -104,9 +110,15 @@ def create_vma_fig(df):
     grouped = (
         df[df["vma"] < 130].groupby(["vma", "grav"]).size().reset_index(name="count")
     )
-    grouped["count_normalized"] = grouped.groupby("vma")["count"].apply(
-        lambda x: x / x.sum()
+
+    # Modification ici
+    count_normalized_series = (
+        grouped.groupby("vma")["count"]
+        .apply(lambda x: x / x.sum())
+        .reset_index(level=0, drop=True)
     )
+    grouped["count_normalized"] = count_normalized_series
+
     fig = go.Figure()
     for grav in grouped["grav"].unique():
         subset = grouped[grouped["grav"] == grav]
