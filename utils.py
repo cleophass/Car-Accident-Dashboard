@@ -40,3 +40,8 @@ def load_data(year):
     usagers = pd.read_csv(os.path.join(base_path, f"usagers-{year}.csv"), sep=";")
     vehicules = pd.read_csv(os.path.join(base_path, f"vehicules-{year}.csv"), sep=";")
     return caracteristiques, lieux, usagers, vehicules
+
+
+def alignement(numb):
+    for _ in range(numb):
+        st.write("\n")

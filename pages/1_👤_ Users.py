@@ -4,7 +4,7 @@
 
 import plotly.express as px
 import streamlit as st
-from utils import load_data
+from utils import load_data, alignement
 
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Users")
 
@@ -43,7 +43,7 @@ def create_fig(df):
     )
 
     # Using a logarithmic scale for the Y-axis
-    fig.update_layout(yaxis_type="log", width=1200, height=600)
+    fig.update_layout(yaxis_type="log", width=800, height=500)
 
     return fig
 
@@ -71,11 +71,13 @@ def create_fig_sex(df):
         ],  # Spécifiez les couleurs à utiliser
     )
     fig.update_layout(
+        width=500,
+        height=400,
         legend=dict(
             font=dict(
-                size=20,  # Définir la taille de la police de la légende ici
+                size=15,  # Définir la taille de la police de la légende ici
             )
-        )
+        ),
     )
 
     # Mettez à jour les paramètres de mise en page supplémentaires
@@ -122,11 +124,12 @@ def create_normalized_accident_chart(df):
     )
 
     fig.update_layout(
+        width=500,
         legend=dict(
             font=dict(
-                size=20,  # Définir la taille de la police de la légende ici
+                size=15,  # Définir la taille de la police de la légende ici
             )
-        )
+        ),
     )
     # Affichage du graphique
     return fig
@@ -143,6 +146,7 @@ def create_journey_reason_pie_chart(df):
     journey_counts.columns = ["trajet", "count"]
     fig = px.pie(journey_counts, names="trajet", values="count")
     fig.update_traces(textinfo="percent")
+    fig.update_layout(width=400, height=400)
     return fig
 
 
@@ -173,14 +177,15 @@ def create_normalized_journey_reason_histogram(df):
         color_discrete_sequence=px.colors.qualitative.Set1,
     )
     fig.update_layout(
-        width=800,
+        width=500,
         height=600,
     )
     return fig
 
 
 def display_users():
-    st.title("🚙 Analysis of user's info 🚗")
+    st.title("🚙 Analysis of User's Information 🚗")
+    alignement(5)
 
     _, locations, users, _ = load_data(2021)
     # Merge DataFrames on the 'Num_Acc' column
@@ -190,40 +195,45 @@ def display_users():
     df3 = df.copy()
     df4 = df.copy()
     df5 = df.copy()
-    st.markdown("""## Distribution des accidents par sexe """)
-    st.write("\n\n\n\n")
-    col1, col2 = st.columns(2)  # Créez deux colonnes
 
-    with col1:  # Utilisez la première colonne
-        st.markdown("""### Pourcentage d'hommes et de femmes dans le dataset""")
+    st.markdown("## Accident Distribution by Gender")
+    alignement(4)
+    col1, col2 = st.columns(2)  # Create two columns
+
+    with col1:  # Use the first column
+        st.markdown("### Percentage of Men and Women in the Dataset")
 
         fig_sx = create_fig_sex(df1)
         st.plotly_chart(fig_sx)
 
-    st.write("\n\n\n\n")
-
-    with col2:  # Utilisez la deuxième colonne
-        st.markdown("""### Répartition normalisée des accidents par gravité""")
+    with col2:  # Use the second column
+        st.markdown("### Normalized Distribution of Accidents by Severity")
         fig_sx2 = create_normalized_accident_chart(df2)
         st.plotly_chart(fig_sx2)
 
     fig = create_fig(df3)
-    st.write("\n\n\n\n")
-    st.markdown("## Distribution of journey reasons with injury severity")
 
-    normalized_view = st.toggle("See normalized representation!", value=False)
+    st.markdown("## Distribution of Journey Reasons with Injury Severity")
+    alignement(4)
+    normalized_view = st.toggle("See Normalized Representation!", value=False)
 
     if normalized_view:
         col1, col2 = st.columns(2)  # Create two columns
+        col1.markdown("### Pie chart of journey reason")  # Title for the pie chart
         for _ in range(5):  # Adjust the alignment if needed
             col1.write("\n")
 
         pie_chart = create_journey_reason_pie_chart(df4)
+
         col1.plotly_chart(pie_chart)  # Display pie chart in the first column
 
         normalized_hist = create_normalized_journey_reason_histogram(df5)
+        col2.markdown(
+            "### Normalized Distribution by Injury Severity"
+        )  # Title for the histogram chart
         col2.plotly_chart(normalized_hist)  # Display histogram in the second column
     else:
+        st.markdown("### Distribution of accident by Journey Reason")
         st.plotly_chart(fig)
 
 

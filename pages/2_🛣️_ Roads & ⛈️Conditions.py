@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import load_data
+from utils import load_data, alignement
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -47,9 +47,9 @@ def create_fig(df):
     )
     fig.update_layout(
         yaxis_type="log",
-        width=1200,
-        height=600,
-        legend=dict(font=dict(size=30)),
+        width=800,
+        height=500,
+        legend=dict(font=dict(size=15)),
     )
     return fig
 
@@ -66,6 +66,7 @@ def create_pie_chart(df):
     fig = px.pie(surf_counts, names="surf", values="count")
 
     fig.update_traces(textinfo="percent")
+    fig.update_layout(width=400, height=400)
     return fig
 
 
@@ -98,10 +99,7 @@ def create_normalized_histogram(df):
         },
         color_discrete_sequence=px.colors.qualitative.Set1,
     )
-    fig.update_layout(
-        width=800,
-        height=600,
-    )
+    fig.update_layout(width=500)
     return fig
 
 
@@ -134,8 +132,8 @@ def create_vma_fig(df):
     fig.update_layout(
         xaxis_title="VMA",
         yaxis_title="Proportion of Accidents",
-        width=1200,
-        height=600,
+        width=800,
+        height=500,
         template="plotly_white",
     )
     return fig
@@ -148,29 +146,44 @@ def display_road():
     df1 = df.copy()
     df2 = df.copy()
     df3 = df.copy()
-    st.write("\n")
-    st.write("\n")
-    st.write("\n")
+    alignement(5)
     st.markdown("## Number of Accidents by Road Surface Condition")
 
-    normalized_view = st.toggle("See it real representation in dataset !", value=False)
+    normalized_view = st.toggle("See it real representation in dataset!", value=False)
+    alignement(4)
 
     if normalized_view:
+        st.markdown(
+            "### Accident Distribution by Road Condition"
+        )  # Title for the fig chart
         fig = create_fig(df1)
         st.plotly_chart(fig)
     else:
         col1, col2 = st.columns(2)  # Create two columns
 
+        col1.markdown("### Accident Distribution Pie Chart by Road Condition")
         # Adding space to align the pie chart with the histogram
-        for _ in range(5):
+        for _ in range(2):
             col1.write("\n")
 
+        # Title for the pie chart
         pie_chart = create_pie_chart(df1)
         col1.plotly_chart(pie_chart)  # Display pie chart in the first column
+
+        col2.markdown(
+            "### Normalized Accident Distribution by Road Condition"
+        )  # Title for the histogram chart
         normalized_hist = create_normalized_histogram(df3)
         col2.plotly_chart(normalized_hist)  # Display histogram in the second column
 
+    alignement(4)
+
     st.markdown("## Number of Accidents by VMA")
+    alignement(2)
+
+    st.markdown(
+        "### Distribution of Accidents by Vehicle Maximum Authorized Speed (VMA)"
+    )  # Title for the VMA chart
     vma_fig = create_vma_fig(df2)
     st.plotly_chart(vma_fig)
 

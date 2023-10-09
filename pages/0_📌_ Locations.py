@@ -14,19 +14,19 @@ def display_fast_marker_cluster(city_data, city_coordinates):
     m = folium.Map(location=city_coordinates, tiles="Cartodb Positron", zoom_start=12)
     FastMarkerCluster(data=list(zip(lats, lons))).add_to(m)
     folium.LayerControl().add_to(m)
-    folium_static(m, width=1200, height=600)
+    folium_static(m, width=900, height=600)
 
 
 def display_heatmap(city_data, city_coordinates):
     city_map = folium.Map(location=city_coordinates, zoom_start=12)
     heat_data = [[row["lat"], row["long"]] for index, row in city_data.iterrows()]
     city_map.add_child(HeatMap(heat_data, radius=15))
-    folium_static(city_map, width=1200, height=600)
+    folium_static(city_map, width=900, height=600)
 
 
 def display_location():
     # Sélection de la ville
-    st.title(f"🚙 Analysis of Location's Accidents :car:")
+    st.title("📌 Analysis of Location's Accidents")
     st.write("\n")
     city = st.radio("Choose a city", ("Paris", "Lyon", "Marseille", "Bordeaux", "Nice"))
 
@@ -76,6 +76,25 @@ def display_location():
         display_heatmap(city_data, city_coordinates)
     else:
         display_fast_marker_cluster(city_data, city_coordinates)
+
+    st.markdown(
+        """
+    ## Map Interpretation
+
+    The interactive map displays accident locations in the chosen city. There are two visualization modes:
+
+    1. [**Fast Marker Cluster:**](https://github.com/Leaflet/Leaflet.markercluster) Accidents are shown as clusters. Zoom in to break these down for specific locations. Each cluster's number denotes total accidents in that vicinity. This visual helps spot areas with denser accidents.
+
+    2. [**Heatmap:**](https://python-visualization.github.io/folium/latest/reference.html) Displays accident densities continuously. Warmer colors (reds, oranges) mark high accident zones, while cooler colors (blues) show lower ones. This gives a generalized view of accident hotspots.
+
+    To navigate: 
+    - Click and drag to move around.
+    - Use zoom controls or mouse scroll for zooming.
+
+    Understanding these visuals provides insights into accident-prone zones in the city. Not just for analysts or policymakers, but also for drivers and pedestrians to remain alert in these areas.
+    """,
+        unsafe_allow_html=True,
+    )
 
 
 display_location()

@@ -60,14 +60,22 @@ st.image(image, caption="Image de sensibilisation à la sécurité routière.", 
 st.write("</div>", unsafe_allow_html=True)
 st.write(
     """
-## Objectifs
-L'objectif principal est d'identifier des tendances, des schémas et des points à améliorer 
-en matière de sécurité routière. En ayant une meilleure compréhension de ces incidents, 
-nous pouvons envisager des solutions pour réduire leur nombre à l'avenir.
+<div style="max-width: 800px;">
 
-## Méthodologie
-J'ai commencé par collecter les données à partir du lien fourni, puis j'ai effectué un nettoyage 
-et une transformation préliminaires. En utilisant Streamlit, j'ai construit ce dashboard interactif 
-pour visualiser facilement les différentes facettes des données. 
-"""
+## Objectives
+
+##### Welcome to the continuation of our deep dive into road accidents.
+
+###### The paramount objective of this analysis is to discern trends, patterns, and areas requiring improvement in road safety. It is through a nuanced understanding of these accidents that we can conceptualize and design effective strategies aimed at diminishing their occurrence in future.
+
+###### Delving deep into such data is imperative. Each statistic not only represents an accident but potentially a life altered. By shedding light on these figures, we aspire to instigate changes – both at the policy level and among the general public.
+
+###### The incentives fueling this research are manifold. Not only does it aim to spotlight areas and periods of high risk, but it also equips decision-makers with invaluable information, guiding infrastructure developments and awareness campaigns. Moreover, for the everyday traveler, it serves as a poignant reminder of the perils of the road, possibly fostering safer road behaviors.
+
+###### As we proceed, we'll delve deeper into specific aspects of road safety, employing visual aids and data-driven insights. Through collective cognizance and actionable intelligence, we hope to journey towards safer roads for all.
+
+</div>
+""",
+    unsafe_allow_html=True,
 )
+st.title("In progress...")
