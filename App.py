@@ -4,7 +4,7 @@ from PIL import Image
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Accidents in France")
 
 
-st.title("🚙 Analysis of Road Accidents in France :car:")
+st.title("💥 Analysis of Road Accidents in France")
 
 
 # Merge DataFrames on the 'Num_Acc' column
