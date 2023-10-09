@@ -140,7 +140,7 @@ def create_vma_fig(df):
 
 
 def display_road():
-    st.title("🚙 Analysis of Road-Related Accidents and Weather Conditions 🚗")
+    st.title("🛣️ Analysis of Road-Related Accidents and Weather Conditions ")
     _, locations, users, _ = load_data(2021)
     df = users.merge(locations, on="Num_Acc")
     df1 = df.copy()

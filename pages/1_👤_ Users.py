@@ -184,7 +184,7 @@ def create_normalized_journey_reason_histogram(df):
 
 
 def display_users():
-    st.title("🚙 Analysis of User's Information 🚗")
+    st.title("👤 Analysis of User's Information ")
     alignement(5)
 
     _, locations, users, _ = load_data(2021)
