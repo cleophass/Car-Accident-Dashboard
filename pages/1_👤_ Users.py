@@ -185,9 +185,12 @@ def create_normalized_journey_reason_histogram(df):
 
 def display_users():
     st.title("👤 Analysis of User's Information ")
-    alignement(5)
-
-    _, locations, users, _ = load_data(2021)
+    alignement(2)
+    selected_year = st.slider(
+        "Select a year", min_value=2017, max_value=2021, value=2021, step=1
+    )
+    _, locations, users, _ = load_data(selected_year)
+    alignement(3)
     # Merge DataFrames on the 'Num_Acc' column
     df = users.merge(locations, on="Num_Acc")
     df1 = df.copy()
@@ -235,6 +238,23 @@ def display_users():
     else:
         st.markdown("### Distribution of accident by Journey Reason")
         st.plotly_chart(fig)
+
+    st.markdown(
+        """
+    ## Interpretation
+
+    In the analysis of user information related to accidents, various aspects have been highlighted:
+
+    1. **Accident Distribution by Gender:** This provides insights into the distribution of accidents based on gender, giving a clearer picture of which gender might be involved in accidents more frequently or which gender faces severe accidents more often.
+
+    2. **Distribution of Journey Reasons with Injury Severity:** By observing the reasons for the journey, and mapping it against the severity of injuries, we can ascertain patterns or correlations between the purpose of the journey and the risk of severe injuries.
+
+    3. **Normalized Representation:** Normalized data offers a relative perspective. It helps to understand the proportional distribution of data categories and removes any biases due to the sheer volume of one category over another.
+
+    It's essential to interpret these visuals not as a tool to stereotype or blame but as a means to understand patterns, identify potential problem areas, and create awareness. Policymakers, planners, and the general public can use this data to make informed decisions, design better road safety campaigns, or understand the risks associated with different scenarios.
+    """,
+        unsafe_allow_html=True,
+    )
 
 
 display_users()

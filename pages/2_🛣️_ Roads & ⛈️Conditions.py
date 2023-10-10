@@ -26,6 +26,14 @@ grav_mapping = {
     4: "Slight injury",
 }
 
+lum_mapping = {
+    1: "Daylight",
+    2: "Twilight or dawn",
+    3: "Night without public lighting",
+    4: "Night with public lighting off",
+    5: "Night with public lighting on",
+}
+
 
 def create_fig(df):
     df["surf"] = df["surf"].map(surf_mapping)
@@ -139,29 +147,76 @@ def create_vma_fig(df):
     return fig
 
 
+def create_lum_pie_chart(df):
+    df["lum"] = df["lum"].map(lum_mapping)
+    lum_counts = df["lum"].value_counts().reset_index()
+    lum_counts.columns = ["lum", "count"]
+    fig = px.pie(lum_counts, names="lum", values="count")
+    fig.update_traces(textinfo="percent")
+    fig.update_layout(width=400, height=400)
+    return fig
+
+
+def create_lum_histogram(df):
+    df["lum"] = df["lum"].map(lum_mapping)
+    df["grav"] = df["grav"].map(grav_mapping)
+
+    # Grouper par 'lum' et 'grav' et calculer la taille de chaque groupe
+    grouped = df.groupby(["lum", "grav"]).size().reset_index(name="count")
+
+    # Normaliser le comptage pour chaque condition d'éclairage (lum)
+    count_normalized_series = (
+        grouped.groupby("lum")["count"]
+        .apply(lambda x: x / x.sum())
+        .reset_index(level=0, drop=True)
+    )
+    grouped["count_normalized"] = count_normalized_series
+
+    fig = px.histogram(
+        grouped,
+        x="lum",
+        y="count_normalized",
+        color="grav",
+        labels={
+            "lum": "Conditions d’éclairage",
+            "grav": "Gravité de l'accident",
+            "count_normalized": "Proportion d'accidents",
+        },
+        color_discrete_sequence=px.colors.qualitative.Set1,
+    )
+    fig.update_layout(width=500)
+    return fig
+
+
 def display_road():
-    st.title("🛣️ Analysis of Road-Related Accidents and Weather Conditions ")
-    _, locations, users, _ = load_data(2021)
+    st.title("🛣️ Analysis of road-related accidents and weather conditions")
+    alignement(2)
+
+    selected_year = st.slider(
+        "Select a year", min_value=2017, max_value=2021, value=2021, step=1
+    )
+    carac, locations, users, _ = load_data(selected_year)
     df = users.merge(locations, on="Num_Acc")
+    df = df.merge(carac, on="Num_Acc")
     df1 = df.copy()
     df2 = df.copy()
     df3 = df.copy()
     alignement(5)
-    st.markdown("## Number of Accidents by Road Surface Condition")
+    st.markdown("## Number of accidents by road surface condition")
+    alignement(4)
 
     normalized_view = st.toggle("See it real representation in dataset!", value=False)
-    alignement(4)
 
     if normalized_view:
         st.markdown(
-            "### Accident Distribution by Road Condition"
+            "### Accident distribution by road condition"
         )  # Title for the fig chart
         fig = create_fig(df1)
         st.plotly_chart(fig)
     else:
         col1, col2 = st.columns(2)  # Create two columns
 
-        col1.markdown("### Accident Distribution Pie Chart by Road Condition")
+        col1.markdown("### Accident distribution pie chart by road condition")
         # Adding space to align the pie chart with the histogram
         for _ in range(2):
             col1.write("\n")
@@ -171,14 +226,14 @@ def display_road():
         col1.plotly_chart(pie_chart)  # Display pie chart in the first column
 
         col2.markdown(
-            "### Normalized Accident Distribution by Road Condition"
+            "### Normalized accident distribution by road condition"
         )  # Title for the histogram chart
         normalized_hist = create_normalized_histogram(df3)
         col2.plotly_chart(normalized_hist)  # Display histogram in the second column
 
     alignement(4)
 
-    st.markdown("## Number of Accidents by VMA")
+    st.markdown("## Number of accidents by VMA")
     alignement(2)
 
     st.markdown(
@@ -186,6 +241,43 @@ def display_road():
     )  # Title for the VMA chart
     vma_fig = create_vma_fig(df2)
     st.plotly_chart(vma_fig)
+
+    alignement(4)
+    st.markdown("## Distribution of accidents by lighting conditions")
+    alignement(2)
+    col1, col2 = st.columns(2)  # Création de deux colonnes
+
+    # Pie Chart pour la colonne lum
+
+    col1.markdown("### pie chart of accidents by lighting conditions")
+    df4 = df.copy()
+    lum_pie_chart = create_lum_pie_chart(df4)
+    col1.plotly_chart(lum_pie_chart)
+
+    # Histogramme pour grav en fonction de lum
+    col2.markdown("### Sevrity of accident severity by lighting Conditions")
+
+    df5 = df.copy()
+    lum_hist = create_lum_histogram(df5)
+    col2.plotly_chart(lum_hist)
+    alignement(5)
+    st.markdown(
+        """
+    ## Interpretation & Insights
+
+    The given visuals delve deep into the accidents concerning various road and weather conditions:
+
+    1. **Road Surface Condition:** Understanding how different road conditions, whether it's wet, flooded, icy, or greasy, impact the severity of accidents is crucial. As seen, certain surfaces might have higher occurrences of severe injuries or fatalities.
+
+    2. **Vehicle Maximum Authorized Speed (VMA):** This depicts the relationship between the authorized speed of vehicles involved and the accident's severity. A clear insight can be how speeds correlate with fatal accidents.
+
+    3. **Lighting Conditions:** The lighting conditions during which accidents occur can greatly influence their outcomes. It's observable that accidents happening at night without public lighting might have different injury severities compared to those in broad daylight.
+
+    By understanding these insights, policymakers can design better road safety measures. Drivers can also be more cautious depending on the prevailing conditions. Whether it's slowing down on icy roads or being extra alert in areas without proper lighting, these insights can aid in accident prevention and safety enhancement.
+
+    """,
+        unsafe_allow_html=True,
+    )
 
 
 display_road()

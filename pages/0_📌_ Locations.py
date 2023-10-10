@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import load_data
+from utils import load_data, alignement
 import folium
 from folium.plugins import FastMarkerCluster, HeatMap
 from streamlit_folium import folium_static
@@ -27,7 +27,7 @@ def display_heatmap(city_data, city_coordinates):
 def display_location():
     # Sélection de la ville
     st.title("📌 Analysis of Location's Accidents")
-    st.write("\n")
+    alignement(2)
     city = st.radio("Choose a city", ("Paris", "Lyon", "Marseille", "Bordeaux", "Nice"))
 
     city_coords = {
@@ -37,8 +37,11 @@ def display_location():
         "Bordeaux": (44.8378, -0.5792, 33),
         "Nice": (43.7102, 7.2620, 6),
     }
-
-    caracteristiques, _, _, _ = load_data(2021)
+    alignement(2)
+    selected_year = st.slider(
+        "Select a year", min_value=2017, max_value=2021, value=2021, step=1
+    )
+    caracteristiques, _, _, _ = load_data(selected_year)
     city_data = caracteristiques[caracteristiques["dep"] == city_coords[city][2]]
     city_coordinates = city_coords[city][:2]
 
