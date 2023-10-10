@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+from utils import load_data, alignement
 
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Accidents in France")
 
@@ -10,7 +11,12 @@ st.title("💥 Analysis of Road Accidents in France")
 # Merge DataFrames on the 'Num_Acc' column
 from utils import load_data
 
-characteristics, locations, users, vehicles = load_data(2021)
+alignement(3)
+selected_year = st.slider(
+    "Select a year", min_value=2019, max_value=2021, value=2021, step=1
+)
+characteristics, locations, users, vehicles = load_data(selected_year)
+alignement(1)
 data_complete = (
     characteristics.merge(users, on="Num_Acc")
     .merge(locations, on="Num_Acc")

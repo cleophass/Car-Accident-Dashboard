@@ -109,7 +109,7 @@ def display_vehicles():
     alignement(3)
 
     selected_year = st.slider(
-        "Select a year", min_value=2017, max_value=2021, value=2021, step=1
+        "Select a year", min_value=2019, max_value=2021, value=2021, step=1
     )
     caracteristiques, lieux, users, vehicles = utils.load_data(selected_year)
     df = vehicles.merge(users, on="Num_Acc")
