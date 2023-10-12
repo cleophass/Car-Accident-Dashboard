@@ -80,9 +80,9 @@ st.write(
 
 ###### As we proceed, we'll delve deeper into specific aspects of road safety, employing visual aids and data-driven insights. Through collective cognizance and actionable intelligence, we hope to journey towards safer roads for all.
 
-Made by Cléophas Fournier
 </div>
 """,
-
     unsafe_allow_html=True,
 )
+
+st.write("Made by Cléophas Fournier")
