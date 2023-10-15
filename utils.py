@@ -8,6 +8,7 @@ def clean_characteristics(df):
     df["hour"] = df["hrmn"].str.split(":").str[0].astype(int)
     df["minute"] = df["hrmn"].str.split(":").str[1].astype(int)
     df.drop(columns=["hrmn"], inplace=True)
+
     df["dep"] = pd.to_numeric(df["dep"], errors="coerce").fillna(0).astype(int)
 
     def convert_latitude(latitude):
@@ -25,7 +26,6 @@ def clean_characteristics(df):
 
     # Maintenant, la colonne 'latitude' contient des valeurs float
 
-    # keep in mind that adr and com will stay object
     return df
 
 

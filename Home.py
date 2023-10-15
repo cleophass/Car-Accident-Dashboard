@@ -8,8 +8,6 @@ st.set_page_config(layout="wide", page_icon="🚗", page_title="Accidents in Fra
 st.title("💥 Analysis of Road Accidents in France")
 
 
-# Merge DataFrames on the 'Num_Acc' column
-from utils import load_data
 
 alignement(3)
 selected_year = st.slider(

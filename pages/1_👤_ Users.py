@@ -50,11 +50,10 @@ def create_fig(df):
 
 def create_fig_sex(df):
     # Groupement des données par sexe et comptage du nombre d'occurrences
-    df_copy = df.copy()
+
     # drop line where value = -1
-    df_copy = df_copy[df_copy["sexe"] != -1]
+    df_copy = df[df["sexe"] != -1]
     sex_counts = df_copy["sexe"].value_counts().reset_index()
-    # sex_counts = df_copy["sexe"].value_counts().reset_index()
 
     # Mapping des codes de sexe à des chaînes de caractères pour une meilleure lisibilité
     sex_mapping = {1: "Male", 2: "Female"}
@@ -64,7 +63,7 @@ def create_fig_sex(df):
         sex_counts,
         values="count",
         names="sexe",
-        hole=0.7,  # Ajoutez un trou au milieu du diagramme à secteurs pour en faire un diagramme en anneau
+        hole=0.5,  # Ajoutez un trou au milieu du diagramme à secteurs pour en faire un diagramme en anneau
         color_discrete_sequence=[
             "#0068C9",
             "#83C9FF",
@@ -79,10 +78,6 @@ def create_fig_sex(df):
             )
         ),
     )
-
-    # Mettez à jour les paramètres de mise en page supplémentaires
-
-    # Affichez le graphique
 
     return fig
 
@@ -106,12 +101,15 @@ def create_normalized_accident_chart(df):
     # Calcul des totaux pour chaque combinaison de sexe et de gravité
     grouped = df.groupby(["sexe", "grav"]).size().reset_index(name="count")
 
-    # Normalisation des comptages en fonction de la proportion de chaque sexe dans le dataset
+    total_entries = len(df)
+    female_count = (df["sexe"] == "Female").sum()
+    female_percentage = female_count / total_entries
+
     grouped.loc[grouped["sexe"] == "Male", "count_normalized"] = grouped["count"] / (
-        1 - 0.316
+        1 - female_percentage
     )
     grouped.loc[grouped["sexe"] == "Female", "count_normalized"] = (
-        grouped["count"] / 0.316
+        grouped["count"] / female_percentage
     )
 
     # Création du graphique

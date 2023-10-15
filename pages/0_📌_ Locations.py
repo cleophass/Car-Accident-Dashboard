@@ -13,13 +13,14 @@ def display_fast_marker_cluster(city_data, city_coordinates):
     lons = city_data["long"]
     m = folium.Map(location=city_coordinates, tiles="Cartodb Positron", zoom_start=12)
     FastMarkerCluster(data=list(zip(lats, lons))).add_to(m)
-    folium.LayerControl().add_to(m)
+
     folium_static(m, width=900, height=600)
 
 
 def display_heatmap(city_data, city_coordinates):
     city_map = folium.Map(location=city_coordinates, zoom_start=12)
     heat_data = [[row["lat"], row["long"]] for index, row in city_data.iterrows()]
+    # for each row in city_data, we create a list with the latitude and longitude
     city_map.add_child(HeatMap(heat_data, radius=15))
     folium_static(city_map, width=900, height=600)
 
@@ -43,7 +44,7 @@ def display_location():
     )
     caracteristiques, _, _, _ = load_data(selected_year)
     city_data = caracteristiques[caracteristiques["dep"] == city_coords[city][2]]
-    city_coordinates = city_coords[city][:2]
+    city_coordinates = city_coords[city][:2]  # (lat, long)
 
     st.title(f" Zoom on {city} ")
 
