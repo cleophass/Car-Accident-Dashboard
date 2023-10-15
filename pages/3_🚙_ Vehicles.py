@@ -130,6 +130,7 @@ def display_vehicles():
     df2 = df2[df2.obs != 0]
     df2 = df2[df2.obsm != -1]
     df2 = df2[df2.obsm != 0]
+    df2 = df2[df2.obsm != 9]
 
     pie_chart_obs = create_pie_chart(df2, "obs", obs_mapping)
 

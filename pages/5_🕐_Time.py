@@ -2,7 +2,9 @@ import streamlit as st
 import utils
 import plotly.express as px
 from utils import load_data, alignement
+import pandas as pd
 
+# comment every line below to explain what's happening
 st.set_page_config(layout="wide", page_icon="🚗", page_title="Time")
 
 # map each month number to its name
@@ -20,6 +22,7 @@ month_mapping = {
     11: "November",
     12: "December",
 }
+# map each injury severity number to its name
 grav_mapping = {
     1: "Unharmed",
     2: "Killed",
@@ -30,6 +33,7 @@ grav_mapping = {
 
 def create_fig_hour(df):
     hourly_counts = df.groupby(["hour", "grav"]).size().reset_index(name="counts")
+
     fig = px.line(
         hourly_counts,
         x="hour",
@@ -58,7 +62,25 @@ def create_fig_hour(df):
 
 def create_fig_month(df):
     df["mois"] = df["mois"].map(month_mapping)
+    month_order = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "Septembre",
+        "October",
+        "November",
+        "December",
+    ]
     monthly_counts = df.groupby(["mois", "grav"]).size().reset_index(name="counts")
+    monthly_counts["mois"] = pd.Categorical(
+        monthly_counts["mois"], categories=month_order, ordered=True
+    )
+    monthly_counts = monthly_counts.sort_values(by="mois")
     fig = px.line(
         monthly_counts,
         x="mois",
@@ -103,6 +125,8 @@ def display_time():
     st.markdown("### Number of accidents by hour")
     fig1 = create_fig_hour(merged_df)
     st.plotly_chart(fig1)
+
+    # in merged_df order by asc column mois
 
     st.markdown("### Number of accidents by time of the year")
     fig2 = create_fig_month(merged_df)
