@@ -8,12 +8,10 @@ st.set_page_config(layout="wide", page_icon="🚗", page_title="Accidents in Fra
 st.title("💥 Analysis of Road Accidents in France")
 
 
-alignement(3)
 selected_year = st.sidebar.slider(
     "Select a year", min_value=2019, max_value=2021, value=2021, step=1
 )
 characteristics, locations, users, vehicles = load_data(selected_year)
-alignement(1)
 data_complete = (
     characteristics.merge(users, on="Num_Acc")
     .merge(locations, on="Num_Acc")
@@ -25,7 +23,7 @@ total_accidents = len(data_complete["Num_Acc"].unique())
 
 # Calculate the total number of deaths after merging
 total_deaths = len(data_complete[data_complete["grav"] == 2]["Num_Acc"].unique())
-
+alignement(3)
 st.markdown(
     f"""
 <div style="display: inline-block;border: 5px solid blue;border-radius: 25px;padding: 10px 20px;margin: 5px;margin-top: 50px;"><h2 style="margin: 5px;">Total Accidents: <span style="color: blue; font-weight: bold;">{total_accidents}</span></h2></div>
@@ -82,4 +80,4 @@ st.write(
     unsafe_allow_html=True,
 )
 
-st.write("Made by Cléophas Fournier")
+st.write("Made by Cléophas Fournier - DATAVZ2023EFREI")
