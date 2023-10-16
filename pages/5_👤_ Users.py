@@ -183,8 +183,7 @@ def create_normalized_journey_reason_histogram(df):
 
 def display_users():
     st.title("👤 Analysis of User's Information ")
-    alignement(2)
-    selected_year = st.slider(
+    selected_year = st.sidebar.slider(
         "Select a year", min_value=2019, max_value=2021, value=2021, step=1
     )
     _, locations, users, _ = load_data(selected_year)

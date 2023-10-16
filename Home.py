@@ -9,7 +9,7 @@ st.title("💥 Analysis of Road Accidents in France")
 
 
 alignement(3)
-selected_year = st.slider(
+selected_year = st.sidebar.slider(
     "Select a year", min_value=2019, max_value=2021, value=2021, step=1
 )
 characteristics, locations, users, vehicles = load_data(selected_year)

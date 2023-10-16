@@ -106,9 +106,8 @@ def create_pie_chart(df, column, mapping):
 
 def display_vehicles():
     st.title("🚙 Analysis of Vehicles Accidents")
-    alignement(3)
 
-    selected_year = st.slider(
+    selected_year = st.sidebar.slider(
         "Select a year", min_value=2019, max_value=2021, value=2021, step=1
     )
     caracteristiques, lieux, users, vehicles = utils.load_data(selected_year)

@@ -190,9 +190,7 @@ def create_lum_histogram(df):
 
 def display_road():
     st.title("🛣️ Analysis of road-related accidents and weather conditions")
-    alignement(2)
-
-    selected_year = st.slider(
+    selected_year = st.sidebar.slider(
         "Select a year", min_value=2019, max_value=2021, value=2021, step=1
     )
     carac, locations, users, _ = load_data(selected_year)

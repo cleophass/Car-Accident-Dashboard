@@ -38,8 +38,7 @@ def display_location():
         "Bordeaux": (44.8378, -0.5792, 33),
         "Nice": (43.7102, 7.2620, 6),
     }
-    alignement(2)
-    selected_year = st.slider(
+    selected_year = st.sidebar.slider(
         "Select a year", min_value=2019, max_value=2021, value=2021, step=1
     )
     caracteristiques, _, _, _ = load_data(selected_year)
