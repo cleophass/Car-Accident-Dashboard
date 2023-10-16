@@ -23,7 +23,6 @@ total_accidents = len(data_complete["Num_Acc"].unique())
 
 # Calculate the total number of deaths after merging
 total_deaths = len(data_complete[data_complete["grav"] == 2]["Num_Acc"].unique())
-alignement(3)
 st.markdown(
     f"""
 <div style="display: inline-block;border: 5px solid blue;border-radius: 25px;padding: 10px 20px;margin: 5px;margin-top: 50px;"><h2 style="margin: 5px;">Total Accidents: <span style="color: blue; font-weight: bold;">{total_accidents}</span></h2></div>
@@ -31,6 +30,7 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
+alignement(3)
 
 
 # Introduction et présentation du projet
