@@ -14,6 +14,8 @@ st.write(
     "Link to the dataset: https://www.data.gouv.fr/fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2021/#/community-reuses"
 )
 
+st.write("number of columns: 60")
+
 # Section "Accident Characteristics"
 st.subheader("1.1. Accident Characteristics")
 with st.expander("Show all"):
