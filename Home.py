@@ -8,7 +8,6 @@ st.set_page_config(layout="wide", page_icon="🚗", page_title="Accidents in Fra
 st.title("💥 Analysis of Road Accidents in France")
 
 
-
 alignement(3)
 selected_year = st.slider(
     "Select a year", min_value=2019, max_value=2021, value=2021, step=1
@@ -60,7 +59,7 @@ st.write(
 
 image = Image.open("assets/accident2.jpg")
 st.write("<div style='text-align:center'>", unsafe_allow_html=True)
-st.image(image, caption="Image de sensibilisation à la sécurité routière.", width=850)
+st.image(image, caption="Road safety awareness image.", width=850)
 st.write("</div>", unsafe_allow_html=True)
 st.write(
     """
